@@ -12,7 +12,6 @@ Please test the project in these cases
 - It was built on node 16 version so if you use latest node version you have to install node 16.16 to run project.
 - If you are using windows OS, terminate the cmd and rerun & retest the cases
 - If you are using MAC OS: install python and test the project
-- If you experience alert box in MAC OS, tell me the cases
 
 ```
 
