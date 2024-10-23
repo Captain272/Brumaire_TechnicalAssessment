@@ -8,6 +8,7 @@ import { ExpandMore, Search as SearchIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 
+import { signOut } from '../../utils/authService';
 import WalletConnectActions from 'actions/walletconnect.actions';
 import AuthActions from 'actions/auth.actions';
 import ModalActions from 'actions/modal.actions';
@@ -205,6 +206,7 @@ const Header = ({ border }) => {
   };
 
   const handleSignOut = () => {
+    signOut();
     deactivate();
     dispatch(WalletConnectActions.disconnectWallet());
     dispatch(AuthActions.signOut());

@@ -6,7 +6,7 @@ import { Menu } from '@material-ui/core';
 import { useWeb3React } from '@web3-react/core';
 import { ExpandMore } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { signOut } from '../../../utils/authService';
 import WalletConnectActions from 'actions/walletconnect.actions';
 import AuthActions from 'actions/auth.actions';
 import { shortenAddress } from 'utils';
@@ -72,6 +72,7 @@ const Header = () => {
   };
 
   const handleSignOut = () => {
+    signOut();
     deactivate();
     dispatch(WalletConnectActions.disconnectWallet());
     dispatch(AuthActions.signOut());
