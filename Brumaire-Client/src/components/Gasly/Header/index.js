@@ -24,6 +24,7 @@ const Header = () => {
 
   const { getAuthToken, getAccountDetails, getIsModerator } = useApi();
   const { account, chainId, deactivate } = useWeb3React();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const { user } = useSelector(state => state.Auth);
 
@@ -60,19 +61,39 @@ const Header = () => {
   };
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        console.log('User is authenticated, setting state to true');
+        setIsAuthenticated(true);
+      } else {
+        console.log('User is not authenticated, setting state to false');
+        setIsAuthenticated(false);
+      }
+      setLoading(false);
+    });
+
     if (account) {
       init();
     } else {
       handleSignOut();
     }
+
+    return () => unsubscribe();
   }, [account, chainId]);
 
   const handleConnectWallet = () => {
     setConnectWalletModalVisible(true);
   };
 
-  const handleSignOut = () => {
+  const handleaccountSignOut = () => {
     signOut();
+    deactivate();
+    dispatch(WalletConnectActions.disconnectWallet());
+    dispatch(AuthActions.signOut());
+    handleMenuClose();
+  };
+
+  const handleSignOut = () => {
     deactivate();
     dispatch(WalletConnectActions.disconnectWallet());
     dispatch(AuthActions.signOut());
@@ -156,6 +177,21 @@ const Header = () => {
           <div
             className={cx(styles.connect, styles.menuLink)}
             onClick={handleConnectWallet}
+          >
+            Connect Wallet
+          </div>
+        )}
+        {isAuthenticated ? (
+          <div
+            className={cx(styles.connect, styles.menuLink)}
+            onClick={handleaccountSignOut}
+          >
+            Sign Out
+          </div>
+        ) : (
+          <div
+            className={cx(styles.connect, styles.menuLink)}
+            onClick={() => {}}
           >
             Connect Wallet
           </div>
